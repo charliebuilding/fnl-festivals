@@ -183,7 +183,12 @@
         }
 
         .btn-primary {
-            display: inline-block;
+            position: relative;
+            overflow: hidden;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
             background: linear-gradient(90deg, var(--fnl-cyan), var(--fnl-magenta));
             color: var(--fnl-deep-black);
             padding: 16px 36px;
@@ -196,12 +201,106 @@
             text-decoration: none;
             border-radius: 4px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            box-shadow: 0 0 30px rgba(0, 255, 209, 0.35), 0 10px 30px rgba(255, 0, 107, 0.25);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            animation: halo-pulse 2.4s ease-in-out infinite;
+        }
+
+        /* Shimmer sweep */
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: -25%;
+            left: 0;
+            width: 60%;
+            height: 150%;
+            background: linear-gradient(90deg,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.5) 50%,
+                rgba(255, 255, 255, 0) 100%);
+            transform: translateX(-200%) skewX(-20deg);
+            pointer-events: none;
+            z-index: 0;
+            animation: shimmer-sweep 3.5s ease-in-out infinite;
+        }
+
+        .btn-primary .btn-label,
+        .btn-primary .arrow {
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-primary .arrow {
+            display: inline-block;
+            transition: transform 0.3s ease;
+            animation: arrow-nudge 2.4s ease-in-out infinite;
         }
 
         .btn-primary:hover {
-            box-shadow: 0 0 40px rgba(0, 255, 209, 0.4);
             transform: translateY(-2px);
+            box-shadow: 0 0 60px rgba(0, 255, 209, 0.7), 0 14px 36px rgba(255, 0, 107, 0.45), 0 0 100px rgba(0, 255, 209, 0.3);
+            animation-play-state: paused;
+        }
+
+        .btn-primary:hover .arrow {
+            animation: none;
+            transform: translateX(6px);
+        }
+
+        .btn-primary:active {
+            transform: translateY(1px);
+            box-shadow: 0 0 20px rgba(0, 255, 209, 0.4);
+            animation-play-state: paused;
+        }
+
+        /* Pink-accent variant for the second card — softens the cyan halo and punches up the magenta */
+        .festival-card:nth-child(2) .btn-primary {
+            animation-name: halo-pulse-magenta;
+        }
+
+        .festival-card:nth-child(2) .btn-primary:hover {
+            box-shadow: 0 0 60px rgba(255, 0, 107, 0.7), 0 14px 36px rgba(0, 255, 209, 0.35), 0 0 100px rgba(255, 0, 107, 0.3);
+        }
+
+        @keyframes halo-pulse {
+            0%, 100% {
+                box-shadow: 0 0 30px rgba(0, 255, 209, 0.35), 0 10px 30px rgba(255, 0, 107, 0.25);
+            }
+            50% {
+                box-shadow: 0 0 60px rgba(0, 255, 209, 0.75), 0 14px 40px rgba(255, 0, 107, 0.5), 0 0 100px rgba(0, 255, 209, 0.3);
+            }
+        }
+
+        @keyframes halo-pulse-magenta {
+            0%, 100% {
+                box-shadow: 0 0 30px rgba(255, 0, 107, 0.35), 0 10px 30px rgba(0, 255, 209, 0.2);
+            }
+            50% {
+                box-shadow: 0 0 60px rgba(255, 0, 107, 0.75), 0 14px 40px rgba(0, 255, 209, 0.35), 0 0 100px rgba(255, 0, 107, 0.3);
+            }
+        }
+
+        @keyframes shimmer-sweep {
+            0%   { transform: translateX(-200%) skewX(-20deg); }
+            35%  { transform: translateX(250%)  skewX(-20deg); }
+            100% { transform: translateX(250%)  skewX(-20deg); }
+        }
+
+        @keyframes arrow-nudge {
+            0%, 70%, 100% { transform: translateX(0); }
+            85%           { transform: translateX(4px); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .btn-primary,
+            .btn-primary::before,
+            .btn-primary .arrow {
+                animation: none !important;
+                transition: none;
+            }
+            .btn-primary {
+                box-shadow: 0 0 40px rgba(0, 255, 209, 0.5), 0 10px 30px rgba(255, 0, 107, 0.3);
+            }
         }
 
         @media (max-width: 768px) {
@@ -263,7 +362,7 @@
                         <div class="festival-stat-label">Epic Night</div>
                     </div>
                 </div>
-                <a href="https://www.letsdothis.com/gb/e/248572?eventId=248572&occurrenceId=21111161678&preferred=true&utm_source=website&utm_medium=organic&utm_campaign=general-event-page&utm_organiser_id=171180" class="btn-primary" target="_top">Join The Movement</a>
+                <a href="https://www.letsdothis.com/gb/e/248572?eventId=248572&occurrenceId=21111161678&preferred=true&utm_source=website&utm_medium=organic&utm_campaign=general-event-page&utm_organiser_id=171180" class="btn-primary" target="_top"><span class="btn-label">Join The Movement</span> <span class="arrow">→</span></a>
             </div>
             <div class="festival-card">
                 <span class="festival-badge">14 May 2026</span>
@@ -283,7 +382,7 @@
                         <div class="festival-stat-label">For 2026</div>
                     </div>
                 </div>
-                <a href="https://www.letsdothis.com/gb/e/263197?preferred=true&eventId=263197&occurrenceId=21111171545&utm_source=website&utm_medium=organic&utm_campaign=general-event-page&utm_organiser_id=171180" class="btn-primary" target="_top">Join The Movement</a>
+                <a href="https://www.letsdothis.com/gb/e/263197?preferred=true&eventId=263197&occurrenceId=21111171545&utm_source=website&utm_medium=organic&utm_campaign=general-event-page&utm_organiser_id=171180" class="btn-primary" target="_top"><span class="btn-label">Join The Movement</span> <span class="arrow">→</span></a>
             </div>
         </div>
     </section>
